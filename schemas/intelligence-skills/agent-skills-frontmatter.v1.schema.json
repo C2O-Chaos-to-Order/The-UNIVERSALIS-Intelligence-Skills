@@ -39,7 +39,50 @@
     "caps": {
       "type": "array",
       "items": {
-        "$ref": "skill-supply-chain.v1.schema.json#/$defs/capability"
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "resource": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "constraints": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "string",
+                "number",
+                "integer",
+                "boolean",
+                "array",
+                "object",
+                "null"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "action",
+          "resource",
+          "purpose"
+        ],
+        "additionalProperties": false
       }
     }
   },
