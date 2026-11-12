@@ -27,3 +27,16 @@ These tests do not execute skills, enforce a sandbox, operate a registry, run th
 - Repository quality baseline: [passed — run 43249365262](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/actions/runs/43249365262)
 
 Both runs completed with all jobs and steps successful on the current implementation branch revision. The public workflow contains only shared contracts and deliberately does not execute or reference C2O-private validation.
+
+
+## Extended sixth-source assurance contracts — 2026-11-12
+
+The shared schema registry now validates eighteen portable contract records, including the added Tool Bill of Materials (TBOM), Tool Security Advisory (TSA), three-method formal-verification bundle, task-outcome quality/lineage record, competence-provenance record, and correction/revocation propagation event. The validator also exercises lexical package-path rejection and resolved symlink escape rejection in a temporary package fixture.
+
+- Contract workflow: [passed — run 43250292584](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/actions/runs/43250292584)
+- Repository quality baseline: [passed — run 43250292526](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/actions/runs/43250292526)
+- Contract-bearing tested commit: [31fc13945dda](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/commit/31fc13945dda685d1e44323ba79c93478ecf73be)
+
+All jobs and steps completed successfully. The public workflow runs only shared public contracts. No C2O-private schema, fixture, script, identity, policy, permit, or registry data is present in the public branch.
+
+The succeeding architecture and documentation commits did not change the validated schema, fixture, validator, or workflow contents. This CI evidence establishes contract and synthetic path-test success only—not a production sandbox, cryptographic attestation verifier, scanner efficacy, proof replay, registry service, or real skill execution.
