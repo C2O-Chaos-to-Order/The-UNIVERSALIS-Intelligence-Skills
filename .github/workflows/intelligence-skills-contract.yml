@@ -1,0 +1,32 @@
+name: Intelligence Skills Contract Validation
+on:
+  push:
+    paths:
+      - "schemas/intelligence-skills/**"
+      - "examples/intelligence_skills/**"
+      - ".github/scripts/intelligence_skill_contract.py"
+      - ".github/workflows/intelligence-skills-contract.yml"
+      - "requirements-ci.txt"
+  pull_request:
+    paths:
+      - "schemas/intelligence-skills/**"
+      - "examples/intelligence_skills/**"
+      - ".github/scripts/intelligence_skill_contract.py"
+      - ".github/workflows/intelligence-skills-contract.yml"
+      - "requirements-ci.txt"
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install JSON Schema validator
+        run: python -m pip install -r requirements-ci.txt
+      - name: Validate schemas, fixtures, and negative cases
+        run: python .github/scripts/intelligence_skill_contract.py
+      - name: Validate C2O-only authority boundary
+        run: python .github/scripts/c2o_authorized_skill_contract.py
