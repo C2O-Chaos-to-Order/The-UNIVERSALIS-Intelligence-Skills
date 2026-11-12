@@ -20,7 +20,13 @@ FILES = {
  "skill_bundle_attestation":"skill-supply-chain.v1.schema.json",
  "skill_release":"skill-supply-chain.v1.schema.json",
  "registry_descriptor":"skill-supply-chain.v1.schema.json",
- "boundary_evidence":"skill-supply-chain.v1.schema.json"
+ "boundary_evidence":"skill-supply-chain.v1.schema.json",
+ "tool_bill_of_materials":"skill-supply-chain.v1.schema.json",
+ "tool_security_advisory":"skill-supply-chain.v1.schema.json",
+ "formal_verification_bundle":"skill-supply-chain.v1.schema.json",
+ "skill_quality_record":"skill-supply-chain.v1.schema.json",
+ "competence_record":"skill-supply-chain.v1.schema.json",
+ "correction_event":"skill-supply-chain.v1.schema.json"
 }
 DEFS = {
  "capability_declaration":"capabilityDeclaration","sandbox_policy":"sandboxPolicy",
@@ -46,10 +52,21 @@ def validate(obj, schema, label):
         raise AssertionError(f"{label}: {list(e.path)} {e.message}")
 
 def safe_path(p):
-    if not p or p.startswith("/") or p.startswith(chr(92)) or re.match(r"^[A-Za-z]:",p):
+    if not p or p.startswith(("/", chr(92))) or re.match(r"^[A-Za-z]:", p):
         return False
     normalized = p.replace(chr(92), "/")
-    return all(x not in ("", ".", "..") for x in normalized.split("/"))
+    return all(part not in ("", ".", "..") for part in normalized.split("/"))
+
+def package_path_contained(root, relative_path):
+    if not safe_path(relative_path):
+        return False
+    resolved_root = Path(root).resolve()
+    resolved_target = (resolved_root / relative_path).resolve()
+    try:
+        resolved_target.relative_to(resolved_root)
+        return True
+    except ValueError:
+        return False
 
 def main():
     for key in FILES:
@@ -59,6 +76,12 @@ def main():
     assert FIXTURE["capability_declaration"]["default_effect"]=="deny"
     assert FIXTURE["sandbox_policy"]["network"]["default_effect"]=="deny"
     assert "authority_token" not in json.dumps(FIXTURE).lower()
+    assert FIXTURE["tool_bill_of_materials"]["subject_sha256"] == att["skill_sha256"]
+    assert FIXTURE["tool_security_advisory"]["affected_digests"] == [att["skill_sha256"]]
+    assert FIXTURE["formal_verification_bundle"]["skill_sha256"] == att["skill_sha256"]
+    assert FIXTURE["skill_quality_record"]["skill_sha256"] == att["skill_sha256"]
+    assert FIXTURE["competence_record"]["skill_artifact_sha256"] == att["skill_sha256"]
+    assert FIXTURE["correction_event"]["subject_sha256"] == att["skill_sha256"]
     cases=[]
     x=copy.deepcopy(FIXTURE); x["skill_frontmatter"]["name"]="../escape"; cases.append(("invalid name","skill_frontmatter",x))
     x=copy.deepcopy(FIXTURE); x["skill_frontmatter"].pop("description"); cases.append(("missing description","skill_frontmatter",x))
@@ -75,9 +98,20 @@ def main():
         except AssertionError: continue
         raise AssertionError("negative case passed unexpectedly: "+label)
     assert safe_path("skills/example/SKILL.md")
-    for p in ("../outside","skills/../../secret","/etc/passwd","C:\\\\Windows\\\\secret"):
+    for p in ("../outside","skills/../../secret","/etc/passwd","C:\\\\Windows\\\\secret", "\\\\server\\share\\secret"):
         assert not safe_path(p), "package path escape accepted: "+p
-    print(f"PASS: {len(FILES)} positive contracts; {len(cases)} negative cases; 5 package path cases")
+    import tempfile
+    with tempfile.TemporaryDirectory() as temp:
+        root=Path(temp)/"plugin"
+        outside=Path(temp)/"outside"
+        root.mkdir(); outside.mkdir()
+        (outside/"secret.txt").write_text("synthetic")
+        (root/"skills/example").mkdir(parents=True)
+        (root/"skills/example/SKILL.md").write_text("fixture")
+        (root/"escape").symlink_to(outside, target_is_directory=True)
+        assert package_path_contained(root,"skills/example/SKILL.md")
+        assert not package_path_contained(root,"escape/secret.txt")
+    print(f"PASS: {len(FILES)} positive contracts; {len(cases)} negative cases; lexical and resolved-symlink package path checks")
     print("LIMIT: no skill execution, runtime sandbox, scanner, or cryptographic verification")
 if __name__=="__main__":
     try: main()
