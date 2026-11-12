@@ -1,0 +1,1298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:c2o-universalis:intelligence-skills:skill-supply-chain:1.0.0",
+  "title": "Portable Intelligence Skill Supply-Chain Contracts",
+  "description": "Registry-neutral shared contracts. Does not encode C2O-private identities, credentials, permits, registries, or authority state.",
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "capability": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "resource": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "constraints": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "array",
+              "object",
+              "null"
+            ]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "action",
+        "resource",
+        "purpose"
+      ],
+      "additionalProperties": false
+    },
+    "capabilityDeclaration": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "declaration_kind": {
+          "const": "requested-capabilities"
+        },
+        "default_effect": {
+          "const": "deny"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/capability"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "declaration_kind",
+        "default_effect",
+        "capabilities"
+      ],
+      "additionalProperties": false
+    },
+    "sandboxPolicy": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "network": {
+          "type": "object",
+          "properties": {
+            "default_effect": {
+              "const": "deny"
+            },
+            "allowlist": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "host": {
+                    "type": "string"
+                  },
+                  "ports": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
+                    }
+                  }
+                },
+                "required": [
+                  "host",
+                  "ports"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "default_effect",
+            "allowlist"
+          ],
+          "additionalProperties": false
+        },
+        "environment": {
+          "type": "object",
+          "properties": {
+            "default_effect": {
+              "const": "deny"
+            },
+            "allowlist": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z_][A-Z0-9_]*$"
+              }
+            }
+          },
+          "required": [
+            "default_effect",
+            "allowlist"
+          ],
+          "additionalProperties": false
+        },
+        "filesystem": {
+          "type": "object",
+          "properties": {
+            "default_effect": {
+              "const": "deny"
+            },
+            "mounts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "enum": [
+                      "read-only",
+                      "read-write"
+                    ]
+                  }
+                },
+                "required": [
+                  "path",
+                  "mode"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "default_effect",
+            "mounts"
+          ],
+          "additionalProperties": false
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "wall_time_ms": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "memory_mib": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "cpu_millis": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_processes": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "wall_time_ms",
+            "memory_mib",
+            "cpu_millis",
+            "max_processes"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "network",
+        "environment",
+        "filesystem",
+        "limits"
+      ],
+      "additionalProperties": false
+    },
+    "executionTrace": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "trace_id": {
+          "type": "string"
+        },
+        "skill_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "sandbox_policy_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "event_id": {
+                "type": "string"
+              },
+              "occurred_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "kind": {
+                "enum": [
+                  "network",
+                  "environment",
+                  "filesystem",
+                  "process",
+                  "tool",
+                  "policy-violation",
+                  "resource-limit"
+                ]
+              },
+              "action": {
+                "type": "string"
+              },
+              "resource": {
+                "type": "string"
+              },
+              "decision": {
+                "enum": [
+                  "allow",
+                  "deny",
+                  "observe"
+                ]
+              },
+              "outcome": {
+                "enum": [
+                  "success",
+                  "failure",
+                  "blocked",
+                  "unknown"
+                ]
+              },
+              "value_sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "evidence_ref": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "event_id",
+              "occurred_at",
+              "kind",
+              "action",
+              "resource",
+              "decision",
+              "outcome"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "trace_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "schema_version",
+        "trace_id",
+        "skill_sha256",
+        "sandbox_policy_sha256",
+        "events",
+        "trace_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "scannerVerdict": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "scanner": {
+          "type": "string"
+        },
+        "scanner_version": {
+          "type": "string"
+        },
+        "subject_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "analysis_mode": {
+          "enum": [
+            "static",
+            "dynamic",
+            "hybrid"
+          ]
+        },
+        "verdict": {
+          "enum": [
+            "block",
+            "review",
+            "no-known-findings"
+          ]
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "finding_id": {
+                "type": "string"
+              },
+              "severity": {
+                "enum": [
+                  "info",
+                  "low",
+                  "medium",
+                  "high",
+                  "critical"
+                ]
+              },
+              "category": {
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "evidence_ref": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "finding_id",
+              "severity",
+              "category",
+              "summary",
+              "evidence_ref"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "scanned_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "human_review_required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "scanner",
+        "scanner_version",
+        "subject_sha256",
+        "analysis_mode",
+        "verdict",
+        "findings",
+        "scanned_at",
+        "human_review_required"
+      ],
+      "additionalProperties": false
+    },
+    "functionalEvidence": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "skill_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "test_suite_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "environment_id": {
+          "type": "string"
+        },
+        "layers": {
+          "type": "object",
+          "properties": {
+            "structure": {
+              "$ref": "#/$defs/layerResult"
+            },
+            "functional": {
+              "$ref": "#/$defs/layerResult"
+            },
+            "static_security": {
+              "$ref": "#/$defs/layerResult"
+            },
+            "runtime_security": {
+              "$ref": "#/$defs/layerResult"
+            }
+          },
+          "required": [
+            "structure",
+            "functional",
+            "static_security",
+            "runtime_security"
+          ],
+          "additionalProperties": false
+        },
+        "final_status": {
+          "enum": [
+            "PASS",
+            "PASS_WITH_WARNINGS",
+            "FAIL",
+            "ERROR",
+            "NOT_RUN"
+          ]
+        },
+        "tested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evaluator_id": {
+          "type": "string"
+        },
+        "fixture_only": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "skill_sha256",
+        "test_suite_sha256",
+        "environment_id",
+        "layers",
+        "final_status",
+        "tested_at",
+        "evaluator_id",
+        "fixture_only"
+      ],
+      "additionalProperties": false
+    },
+    "layerResult": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "PASS",
+            "PASS_WITH_WARNINGS",
+            "FAIL",
+            "ERROR",
+            "NOT_RUN"
+          ]
+        },
+        "evidence_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "skillBundleAttestation": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "skill_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "capability_declaration_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "functional_evidence_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "sandbox_policy_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "execution_trace_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "signed_statement_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "signature_algorithm": {
+          "enum": [
+            "Ed25519"
+          ]
+        },
+        "signature_base64": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+        },
+        "signer_id": {
+          "type": "string"
+        },
+        "trust_anchor_ref": {
+          "type": "string"
+        },
+        "signed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "verification_status": {
+          "enum": [
+            "not-verified",
+            "verified",
+            "rejected",
+            "revoked"
+          ]
+        },
+        "independent_verifier_id": {
+          "type": "string"
+        },
+        "fixture_only": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "skill_sha256",
+        "manifest_sha256",
+        "capability_declaration_sha256",
+        "functional_evidence_sha256",
+        "sandbox_policy_sha256",
+        "execution_trace_sha256",
+        "signed_statement_sha256",
+        "signature_algorithm",
+        "signature_base64",
+        "signer_id",
+        "trust_anchor_ref",
+        "signed_at",
+        "verification_status",
+        "fixture_only"
+      ],
+      "additionalProperties": false
+    },
+    "skillRelease": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "skill_name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "package_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "capability_declaration_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "skill_name": {
+                "type": "string"
+              },
+              "version_constraint": {
+                "type": "string"
+              },
+              "package_sha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            },
+            "required": [
+              "skill_name",
+              "version_constraint"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "license": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "release_ref": {
+          "type": "string"
+        },
+        "released_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "schema_version",
+        "skill_name",
+        "version",
+        "package_sha256",
+        "manifest_sha256",
+        "capability_declaration_sha256",
+        "dependencies",
+        "source_ref",
+        "release_ref",
+        "released_at"
+      ],
+      "additionalProperties": false
+    },
+    "registryDescriptor": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "registry_id": {
+          "type": "string"
+        },
+        "skill_name": {
+          "type": "string"
+        },
+        "release_ref": {
+          "type": "string"
+        },
+        "package_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "interfaces": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "mcp-tool",
+              "rest"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "tool_name": {
+          "type": "string"
+        },
+        "rest_endpoint": {
+          "type": "string"
+        },
+        "operator_controlled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "registry_id",
+        "skill_name",
+        "release_ref",
+        "package_sha256",
+        "interfaces",
+        "operator_controlled"
+      ],
+      "additionalProperties": false
+    },
+    "boundaryEvidence": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "subject_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "boundary": {
+                "enum": [
+                  "data",
+                  "memory",
+                  "tools",
+                  "model-routing",
+                  "egress",
+                  "consent",
+                  "actions"
+                ]
+              },
+              "expected": {
+                "enum": [
+                  "allow",
+                  "deny",
+                  "constrained"
+                ]
+              },
+              "observed": {
+                "enum": [
+                  "allow",
+                  "deny",
+                  "constrained",
+                  "unknown"
+                ]
+              },
+              "result": {
+                "enum": [
+                  "pass",
+                  "fail",
+                  "inconclusive"
+                ]
+              },
+              "evidence_sha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            },
+            "required": [
+              "boundary",
+              "expected",
+              "observed",
+              "result",
+              "evidence_sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tbom_ref": {
+          "type": "string"
+        },
+        "tsa_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assessed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "schema_version",
+        "subject_sha256",
+        "claims",
+        "assessed_at"
+      ],
+      "additionalProperties": false
+    },
+    "toolBillOfMaterials": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "subject_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "component_id": {
+                "type": "string"
+              },
+              "component_type": {
+                "enum": [
+                  "skill",
+                  "mcp-server",
+                  "tool",
+                  "model",
+                  "dependency",
+                  "container",
+                  "runner"
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "digest": {
+                "$ref": "#/$defs/sha256"
+              },
+              "source_ref": {
+                "type": "string"
+              },
+              "license": {
+                "type": "string"
+              },
+              "dependency_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "component_id",
+              "component_type",
+              "name",
+              "digest"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "generator": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "subject_sha256",
+        "components",
+        "generated_at",
+        "generator"
+      ],
+      "additionalProperties": false
+    },
+    "toolSecurityAdvisory": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "advisory_id": {
+          "type": "string"
+        },
+        "event_type": {
+          "enum": [
+            "vulnerability",
+            "malware",
+            "compromise",
+            "revocation",
+            "policy-change",
+            "correction"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "info",
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "status": {
+          "enum": [
+            "open",
+            "mitigated",
+            "resolved",
+            "withdrawn"
+          ]
+        },
+        "affected_digests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sha256"
+          },
+          "minItems": 1
+        },
+        "summary": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "published_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "fixed_release_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "human_review_required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "advisory_id",
+        "event_type",
+        "severity",
+        "status",
+        "affected_digests",
+        "summary",
+        "source_ref",
+        "published_at",
+        "human_review_required"
+      ],
+      "additionalProperties": false
+    },
+    "formalVerificationBundle": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "skill_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "capability_declaration_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "canonicalization": {
+          "enum": [
+            "sorted-key-json-v1",
+            "RFC8785-JCS"
+          ]
+        },
+        "methods": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "properties": {
+              "method_id": {
+                "type": "string"
+              },
+              "method_version": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "PASS",
+                  "FAIL",
+                  "NOT_RUN"
+                ]
+              },
+              "evidence_files": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "$ref": "#/$defs/sha256"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "method_id",
+              "method_version",
+              "status",
+              "evidence_files"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "proof_bundle_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "replay_status": {
+          "enum": [
+            "verified",
+            "rejected",
+            "not-run"
+          ]
+        },
+        "verifier_id": {
+          "type": "string"
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "fixture_only": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "skill_sha256",
+        "manifest_sha256",
+        "capability_declaration_sha256",
+        "canonicalization",
+        "methods",
+        "proof_bundle_sha256",
+        "replay_status",
+        "fixture_only"
+      ],
+      "additionalProperties": false
+    },
+    "skillQualityRecord": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "evaluation_id": {
+          "type": "string"
+        },
+        "skill_name": {
+          "type": "string"
+        },
+        "skill_version": {
+          "type": "string"
+        },
+        "skill_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "benchmark_suite_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "environment_id": {
+          "type": "string"
+        },
+        "task_results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string"
+              },
+              "outcome": {
+                "enum": [
+                  "pass",
+                  "partial",
+                  "fail",
+                  "not-run"
+                ]
+              },
+              "evidence_ref": {
+                "type": "string"
+              },
+              "evaluator_ref": {
+                "type": "string"
+              },
+              "limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "task_id",
+              "outcome",
+              "evidence_ref"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "lineage": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lifecycle_status": {
+          "enum": [
+            "active",
+            "review",
+            "retired"
+          ]
+        },
+        "reviewer_ref": {
+          "type": "string"
+        },
+        "evaluated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "fixture_only": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "evaluation_id",
+        "skill_name",
+        "skill_version",
+        "skill_sha256",
+        "benchmark_suite_sha256",
+        "environment_id",
+        "task_results",
+        "lineage",
+        "lifecycle_status",
+        "evaluated_at",
+        "fixture_only"
+      ],
+      "additionalProperties": false
+    },
+    "competenceRecord": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "competence_id": {
+          "type": "string"
+        },
+        "subject_ref": {
+          "type": "string"
+        },
+        "skill_concept_id": {
+          "type": "string"
+        },
+        "skill_artifact_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "task_ref": {
+          "type": "string"
+        },
+        "context": {
+          "type": "string"
+        },
+        "standard_or_rubric_ref": {
+          "type": "string"
+        },
+        "observed_outcomes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "evaluator_ref": {
+          "type": "string"
+        },
+        "provenance_format": {
+          "enum": [
+            "W3C-VC",
+            "Open-Badges",
+            "native-record"
+          ]
+        },
+        "status": {
+          "enum": [
+            "claimed",
+            "observed-once",
+            "replicated-in-context",
+            "externally-reviewed",
+            "contradicted",
+            "deprecated"
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "fixture_only": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "competence_id",
+        "subject_ref",
+        "skill_concept_id",
+        "task_ref",
+        "context",
+        "standard_or_rubric_ref",
+        "observed_outcomes",
+        "evidence_refs",
+        "status",
+        "recorded_at",
+        "fixture_only"
+      ],
+      "additionalProperties": false
+    },
+    "correctionEvent": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "correction_id": {
+          "type": "string"
+        },
+        "event_type": {
+          "enum": [
+            "retract",
+            "revoke",
+            "supersede",
+            "vulnerability",
+            "policy-correction"
+          ]
+        },
+        "subject_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "affected_evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reason": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "propagation_status": {
+          "enum": [
+            "pending",
+            "in-progress",
+            "complete",
+            "failed"
+          ]
+        },
+        "dependents_invalidated": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "fixture_only": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "correction_id",
+        "event_type",
+        "subject_sha256",
+        "affected_evidence_refs",
+        "reason",
+        "source_ref",
+        "propagation_status",
+        "recorded_at",
+        "fixture_only"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
