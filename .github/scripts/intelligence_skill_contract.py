@@ -32,7 +32,10 @@ DEFS = {
  "capability_declaration":"capabilityDeclaration","sandbox_policy":"sandboxPolicy",
  "execution_trace":"executionTrace","scanner_verdict":"scannerVerdict",
  "functional_evidence":"functionalEvidence","skill_bundle_attestation":"skillBundleAttestation",
- "skill_release":"skillRelease","registry_descriptor":"registryDescriptor","boundary_evidence":"boundaryEvidence"
+ "skill_release":"skillRelease","registry_descriptor":"registryDescriptor","boundary_evidence":"boundaryEvidence",
+ "tool_bill_of_materials":"toolBillOfMaterials","tool_security_advisory":"toolSecurityAdvisory",
+ "formal_verification_bundle":"formalVerificationBundle","skill_quality_record":"skillQualityRecord",
+ "competence_record":"competenceRecord","correction_event":"correctionEvent"
 }
 CACHE = {f: json.loads((SD/f).read_text()) for f in set(FILES.values())}
 
