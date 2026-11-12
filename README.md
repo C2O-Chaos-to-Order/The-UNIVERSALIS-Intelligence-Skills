@@ -32,3 +32,15 @@ The Markdown file is the canonical text. The `.docx` is a convenience companion.
 | [The-UNIVERSALIS-Intelligence-Powers](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Powers) | Intelligence Powers (I-P) |
 | [The-UNIVERSALIS-Ontology](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Ontology) | Master Ontology: Human and Intelligence |
 | [The-UNIVERSALIS-Encyclopedias](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Encyclopedias) | Public encyclopedia placeholder (no commits as of the 2026-11-10 inventory) |
+
+
+## Intelligence Skills toolchain
+
+The canonical `Intelligence_Skills.md` file remains the UNIVERSALIS concept and classification taxonomy (I-S-01 through I-S-20). The implementation branch adds a distinct open toolchain layer for skill artifacts, packages, registries, sandbox policies, security evidence, attestations, and independently operated execution.
+
+- [Toolchain architecture](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/blob/implementation/repository-foundation-2026-11-12/INTELLIGENCE_SKILLS_TOOLCHAIN_ARCHITECTURE.md)
+- [Portable schemas](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/tree/implementation/repository-foundation-2026-11-12/schemas/intelligence-skills)
+- [Synthetic package example](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/tree/implementation/repository-foundation-2026-11-12/examples/plugin)
+- [Validation record and limits](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/blob/implementation/repository-foundation-2026-11-12/INTELLIGENCE_SKILLS_VALIDATION.md)
+
+This public implementation contains no C2O-private authority decisions, credentials, permits, registry records, signing keys, or operational traces. A manifest or signature does not grant execution authority.
