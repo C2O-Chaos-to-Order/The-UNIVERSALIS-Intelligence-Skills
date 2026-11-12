@@ -89,3 +89,12 @@ Cisco Skill Scanner: https://github.com/cisco-ai-defense/skill-scanner
 Hybrid static/dynamic/agentic analysis: https://arxiv.org/abs/2611.10830
 
 Remaining product descriptions and performance figures are owner-supplied research claims pending direct source verification and reproduction.
+
+
+## Expanded evidence and lifecycle contracts
+
+The shared schema registry also provides records for Tool Bill of Materials (TBOM), Tool Security Advisory (TSA), formal-verification evidence bundles, outcome-based skill quality/lineage, demonstrated competence provenance, and correction/revocation propagation. These cover portable evidence shapes for ABA boundary assurance, proof replay, OpenSpace-style outcome lineage, Cupel-style competence provenance, and correction-aware skill lifecycles. These records are registry-neutral and do not introduce a central registry or a C2O authority service.
+
+Additional open-side candidates already recorded in this repository's engineering context—hackmyagent for scan/red-team/behavioral simulation, Cisco DefenseClaw, and Sandlock as alternative security/sandbox candidates—remain candidates pending identity/version, license, security, and compatibility verification. SkillSeal and Cupel also appear in the Human Capabilities proposal; NVIDIA OpenShell appears in Intelligence Capabilities. Reconcile identity and version before deduplicating these cross-domain mentions.
+
+There are eighteen shared schema record families. Current CI validates all eighteen shared fixture objects plus package path traversal and resolved-symlink containment checks. This does not mean actual skills are executed under a production sandbox: runtime enforcement, live scanner execution, cryptographic SBA verification, proof replay, competence credential issuance, advisory propagation, and a production registry remain unimplemented.
