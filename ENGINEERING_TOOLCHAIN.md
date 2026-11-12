@@ -82,4 +82,20 @@ Treat every third-party name in that register as a proposed candidate/reference 
 
 ## Master toolchain coverage register — 2026-11-12
 
-The current public inventory for the original four toolchain documents plus the Intelligence Capabilities source is maintained in the UNIVERSALIS research register: https://github.com/C2O-Chaos-to-Order/Research-for-the-UNIVERSALIS-Ecosystem/blob/implementation/repository-foundation-2026-11-12/TOOLCHAIN_COVERAGE_REGISTER.md. It distinguishes documentation, basic contracts, passing CI, and actual integrations. This public register contains no links to C2O-private owner repositories or policy values.
+The current public inventory for the original four toolchain documents plus Intelligence Capabilities and Intelligence Skills is maintained in the UNIVERSALIS research register: https://github.com/C2O-Chaos-to-Order/Research-for-the-UNIVERSALIS-Ecosystem/blob/implementation/repository-foundation-2026-11-12/TOOLCHAIN_COVERAGE_REGISTER.md. It distinguishes documentation, basic contracts, passing CI, and actual integrations. This public register contains no links to C2O-private owner repositories or policy values.
+
+
+## Sixth toolchain source — Intelligence Skills — 2026-11-12
+
+The sixth owner-supplied inventory defines the open UNIVERSALIS skill artifact and execution layer. The canonical taxonomy remains in `Intelligence_Skills.md`; this toolchain does not replace it.
+
+- [UNIVERSALIS open skill toolchain architecture](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/blob/implementation/repository-foundation-2026-11-12/INTELLIGENCE_SKILLS_TOOLCHAIN_ARCHITECTURE.md)
+- [Portable supply-chain schemas](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/tree/implementation/repository-foundation-2026-11-12/schemas/intelligence-skills)
+- [Synthetic package example](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/tree/implementation/repository-foundation-2026-11-12/examples/plugin)
+- [Validation and limitations](https://github.com/C2O-Chaos-to-Order/The-UNIVERSALIS-Intelligence-Skills/blob/implementation/repository-foundation-2026-11-12/INTELLIGENCE_SKILLS_VALIDATION.md)
+
+Candidate inventory: Agent Skills Specification; Agent Plugins 1.0.0; MCP Skill Registry; SkillDock.io; OpenSpace; SkillSandbox; Skillbox; SkillSeal; Cisco Skill Scanner; Zenity Labs AI Total; Tencent skill-scan; hybrid static/dynamic/agentic analysis; NVIDIA signed skills; formal verification of agent skills; Cupel. These are research candidates/patterns, not installed integrations.
+
+The common contracts are registry-neutral: manifest profile, package schemas, requested capability declaration, default-deny sandbox policy, execution trace, scanner verdict, functional-evidence report, SBA, release/dependency record, discovery descriptor, and boundary-evidence record. Each operator controls its own registry and acceptance policy. No C2O private authority, registry, credentials, permit, trust store or operational data is part of the public implementation.
+
+The research [public master toolchain coverage register](https://github.com/C2O-Chaos-to-Order/Research-for-the-UNIVERSALIS-Ecosystem/blob/implementation/repository-foundation-2026-11-12/TOOLCHAIN_COVERAGE_REGISTER.md) records all six source inventories and their evidence state.
