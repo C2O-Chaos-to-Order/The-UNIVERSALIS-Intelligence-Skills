@@ -212,5 +212,155 @@
     "tbom_ref": "fixture://tbom/example",
     "tsa_refs": [],
     "assessed_at": "2026-11-12T15:00:00Z"
+  },
+  "tool_bill_of_materials": {
+    "schema_version": "1.0.0",
+    "subject_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "components": [
+      {
+        "component_id": "component-skill",
+        "component_type": "skill",
+        "name": "portable-research-skill",
+        "version": "1.0.0",
+        "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source_ref": "fixture://skill/source",
+        "license": "MIT",
+        "dependency_refs": []
+      }
+    ],
+    "generated_at": "2026-11-12T15:00:00Z",
+    "generator": "fixture-only"
+  },
+  "tool_security_advisory": {
+    "schema_version": "1.0.0",
+    "advisory_id": "FIXTURE-2026-0001",
+    "event_type": "vulnerability",
+    "severity": "medium",
+    "status": "open",
+    "affected_digests": [
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "summary": "Synthetic advisory example; not a real vulnerability report.",
+    "source_ref": "fixture://advisory/001",
+    "published_at": "2026-11-12T15:00:00Z",
+    "fixed_release_refs": [],
+    "human_review_required": true
+  },
+  "formal_verification_bundle": {
+    "schema_version": "1.0.0",
+    "skill_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "manifest_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "capability_declaration_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "canonicalization": "sorted-key-json-v1",
+    "methods": [
+      {
+        "method_id": "method-1",
+        "method_version": "fixture",
+        "status": "NOT_RUN",
+        "evidence_files": [
+          {
+            "path": "evidence/layer-1.json",
+            "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+          }
+        ]
+      },
+      {
+        "method_id": "method-2",
+        "method_version": "fixture",
+        "status": "NOT_RUN",
+        "evidence_files": [
+          {
+            "path": "evidence/layer-2.json",
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+          }
+        ]
+      },
+      {
+        "method_id": "method-3",
+        "method_version": "fixture",
+        "status": "NOT_RUN",
+        "evidence_files": [
+          {
+            "path": "evidence/layer-3.json",
+            "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+          }
+        ]
+      }
+    ],
+    "proof_bundle_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+    "replay_status": "not-run",
+    "verifier_id": "fixture-only",
+    "verified_at": "2026-11-12T15:00:00Z",
+    "fixture_only": true
+  },
+  "skill_quality_record": {
+    "schema_version": "1.0.0",
+    "evaluation_id": "fixture-quality-001",
+    "skill_name": "portable-research-skill",
+    "skill_version": "1.0.0",
+    "skill_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "benchmark_suite_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "environment_id": "synthetic-fixture",
+    "task_results": [
+      {
+        "task_id": "task-001",
+        "outcome": "pass",
+        "evidence_ref": "fixture://quality/task-001",
+        "evaluator_ref": "fixture-only"
+      },
+      {
+        "task_id": "task-002",
+        "outcome": "not-run",
+        "evidence_ref": "fixture://quality/task-002",
+        "limitations": [
+          "No real task executed"
+        ]
+      }
+    ],
+    "lineage": [],
+    "lifecycle_status": "review",
+    "reviewer_ref": "fixture-only",
+    "evaluated_at": "2026-11-12T15:00:00Z",
+    "fixture_only": true
+  },
+  "competence_record": {
+    "schema_version": "1.0.0",
+    "competence_id": "fixture-competence-001",
+    "subject_ref": "fixture://agent/example",
+    "skill_concept_id": "I-S-01.02",
+    "skill_artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "task_ref": "fixture://task/source-appraisal",
+    "context": "Synthetic offline research corpus",
+    "standard_or_rubric_ref": "fixture://rubric/appraisal-v1",
+    "observed_outcomes": [
+      "Identified source types in synthetic fixture"
+    ],
+    "evidence_refs": [
+      "fixture://evidence/competence-001"
+    ],
+    "evaluator_ref": "fixture-only",
+    "provenance_format": "native-record",
+    "status": "observed-once",
+    "limitations": [
+      "Synthetic example; no actor competence asserted"
+    ],
+    "recorded_at": "2026-11-12T15:00:00Z",
+    "fixture_only": true
+  },
+  "correction_event": {
+    "schema_version": "1.0.0",
+    "correction_id": "fixture-correction-001",
+    "event_type": "vulnerability",
+    "subject_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "affected_evidence_refs": [
+      "fixture://attestation/001",
+      "fixture://quality/001"
+    ],
+    "reason": "Synthetic correction propagation example.",
+    "source_ref": "fixture://advisory/001",
+    "propagation_status": "pending",
+    "dependents_invalidated": [],
+    "recorded_at": "2026-11-12T15:00:00Z",
+    "fixture_only": true
   }
 }
