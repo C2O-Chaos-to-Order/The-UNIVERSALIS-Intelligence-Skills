@@ -1,8 +1,8 @@
 # Intelligence Skills Toolchain Architecture — UNIVERSALIS
 
-Owner: The UNIVERSALIS Intelligence Skills repository  
-Boundary: Public UNIVERSALIS / MotherThread  
-Status: Open architecture and contract foundation; third-party integrations remain pending  
+Owner: The UNIVERSALIS Intelligence Skills repository
+Boundary: Public UNIVERSALIS / MotherThread
+Status: Open architecture and contract foundation; third-party integrations remain pending
 Version: 1.0.0 proposal, 2026-11-12
 
 ## Purpose and independence
@@ -81,11 +81,11 @@ This branch provides shared schemas, synthetic fixtures, semantic checks, and CI
 
 ## References
 
-Agent Skills: https://agentskills.io/specification  
-Agent Plugins 1.0.0: https://agent-plugins.org/specification  
-Agent Plugins manifest schema: https://agent-plugins.org/schemas/1.0.0/plugin.schema.json  
-Agent Plugins MCP schema: https://agent-plugins.org/schemas/1.0.0/mcp.schema.json  
-Cisco Skill Scanner: https://github.com/cisco-ai-defense/skill-scanner  
+Agent Skills: https://agentskills.io/specification
+Agent Plugins 1.0.0: https://agent-plugins.org/specification
+Agent Plugins manifest schema: https://agent-plugins.org/schemas/1.0.0/plugin.schema.json
+Agent Plugins MCP schema: https://agent-plugins.org/schemas/1.0.0/mcp.schema.json
+Cisco Skill Scanner: https://github.com/cisco-ai-defense/skill-scanner
 Hybrid static/dynamic/agentic analysis: https://arxiv.org/abs/2611.10830
 
 Remaining product descriptions and performance figures are owner-supplied research claims pending direct source verification and reproduction.

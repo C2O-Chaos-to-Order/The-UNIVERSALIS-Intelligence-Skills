@@ -1,7 +1,7 @@
 # Intelligence Skills Validation Record
 
-Branch: implementation/repository-foundation-2026-11-12  
-Contract version: 1.0.0  
+Branch: implementation/repository-foundation-2026-11-12
+Contract version: 1.0.0
 Status: Exact-commit Intelligence Skills contract workflow and repository quality baseline passed.
 
 ## Implemented checks
