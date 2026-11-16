@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:c2o-universalis:intelligence-skills:agent-skills-frontmatter:1.0.0",
+  "title": "Agent Skills normalized frontmatter profile",
+  "description": "Base Agent Skills fields plus the explicitly non-standard C2O/UNIVERSALIS caps extension.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^(?!-)(?!.*--)[a-z0-9-]+(?<!-)$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "license": {
+      "type": "string"
+    },
+    "compatibility": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "allowed-tools": {
+      "type": "string",
+      "description": "Experimental in the base standard; not an authorization or sandbox control."
+    },
+    "caps_profile": {
+      "const": "c2o-universalis/1.0"
+    },
+    "caps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "resource": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "constraints": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "string",
+                "number",
+                "integer",
+                "boolean",
+                "array",
+                "object",
+                "null"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "action",
+          "resource",
+          "purpose"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "name",
+    "description"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "caps"
+        ]
+      },
+      "then": {
+        "required": [
+          "caps_profile"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "caps_profile"
+        ]
+      },
+      "then": {
+        "required": [
+          "caps"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": false
+}
