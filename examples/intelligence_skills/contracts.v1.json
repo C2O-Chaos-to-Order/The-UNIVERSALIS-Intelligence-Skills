@@ -1,0 +1,366 @@
+{
+  "skill_frontmatter": {
+    "name": "portable-research-skill",
+    "description": "Summarizes a supplied research corpus and identifies contradictions. Use when a user requests a source-grounded research summary.",
+    "license": "MIT",
+    "compatibility": "Local Python 3.12 runtime; no network required.",
+    "metadata": {
+      "author": "example-maintainer",
+      "version": "1.0.0"
+    },
+    "allowed-tools": "Read",
+    "caps_profile": "c2o-universalis/1.0",
+    "caps": [
+      {
+        "id": "filesystem.read",
+        "action": "read",
+        "resource": "./references/**",
+        "purpose": "Read bundled research references",
+        "constraints": {
+          "read_only": true
+        }
+      }
+    ]
+  },
+  "plugin_manifest": {
+    "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+    "name": "portable-research-skill",
+    "version": "1.0.0",
+    "description": "Portable research skill package.",
+    "license": "MIT"
+  },
+  "mcp_config": {
+    "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+    "mcpServers": {
+      "runner": {
+        "type": "stdio",
+        "command": "python3",
+        "args": [
+          "./scripts/run.py"
+        ],
+        "cwd": "${PLUGIN_ROOT}",
+        "env": {
+          "MODE": "offline"
+        }
+      }
+    }
+  },
+  "capability_declaration": {
+    "schema_version": "1.0.0",
+    "declaration_kind": "requested-capabilities",
+    "default_effect": "deny",
+    "capabilities": [
+      {
+        "id": "filesystem.read",
+        "action": "read",
+        "resource": "./references/**",
+        "purpose": "Read bundled research references",
+        "constraints": {
+          "read_only": true
+        }
+      }
+    ]
+  },
+  "sandbox_policy": {
+    "schema_version": "1.0.0",
+    "network": {
+      "default_effect": "deny",
+      "allowlist": []
+    },
+    "environment": {
+      "default_effect": "deny",
+      "allowlist": [
+        "MODE"
+      ]
+    },
+    "filesystem": {
+      "default_effect": "deny",
+      "mounts": [
+        {
+          "path": "./references",
+          "mode": "read-only"
+        }
+      ]
+    },
+    "limits": {
+      "wall_time_ms": 30000,
+      "memory_mib": 256,
+      "cpu_millis": 1000,
+      "max_processes": 8
+    }
+  },
+  "execution_trace": {
+    "schema_version": "1.0.0",
+    "trace_id": "fixture-trace-001",
+    "skill_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "sandbox_policy_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "events": [
+      {
+        "event_id": "evt-001",
+        "occurred_at": "2026-11-12T15:00:00Z",
+        "kind": "filesystem",
+        "action": "read",
+        "resource": "./references/source.md",
+        "decision": "allow",
+        "outcome": "success",
+        "value_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }
+    ],
+    "trace_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "scanner_verdict": {
+    "schema_version": "1.0.0",
+    "scanner": "Cisco Skill Scanner (candidate)",
+    "scanner_version": "not-pinned",
+    "subject_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "analysis_mode": "static",
+    "verdict": "review",
+    "findings": [
+      {
+        "finding_id": "fixture-note-001",
+        "severity": "medium",
+        "category": "supply-chain-review",
+        "summary": "Synthetic example finding requiring human review.",
+        "evidence_ref": "fixture://finding/001"
+      }
+    ],
+    "scanned_at": "2026-11-12T15:00:00Z",
+    "human_review_required": true
+  },
+  "functional_evidence": {
+    "schema_version": "1.0.0",
+    "skill_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "test_suite_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "environment_id": "synthetic-fixture",
+    "layers": {
+      "structure": {
+        "status": "PASS",
+        "evidence_sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "functional": {
+        "status": "PASS",
+        "evidence_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "static_security": {
+        "status": "PASS_WITH_WARNINGS",
+        "evidence_sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+      },
+      "runtime_security": {
+        "status": "NOT_RUN"
+      }
+    },
+    "final_status": "PASS_WITH_WARNINGS",
+    "tested_at": "2026-11-12T15:00:00Z",
+    "evaluator_id": "fixture-only",
+    "fixture_only": true
+  },
+  "skill_bundle_attestation": {
+    "schema_version": "1.0.0",
+    "skill_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "manifest_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "capability_declaration_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "functional_evidence_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "sandbox_policy_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "execution_trace_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "signed_statement_sha256": "9999999999999999999999999999999999999999999999999999999999999999",
+    "signature_algorithm": "Ed25519",
+    "signature_base64": "Zml4dHVyZS1vbmx5LW5vdC1hLXJlYWwtc2lnbmF0dXJl",
+    "signer_id": "fixture-only-signer",
+    "trust_anchor_ref": "fixture://trust-anchor/test-only",
+    "signed_at": "2026-11-12T15:00:00Z",
+    "verification_status": "not-verified",
+    "fixture_only": true
+  },
+  "skill_release": {
+    "schema_version": "1.0.0",
+    "skill_name": "portable-research-skill",
+    "version": "1.0.0",
+    "package_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "manifest_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "capability_declaration_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "dependencies": [],
+    "license": "MIT",
+    "source_ref": "fixture://source/example",
+    "release_ref": "fixture://release/example/1.0.0",
+    "released_at": "2026-11-12T15:00:00Z"
+  },
+  "registry_descriptor": {
+    "schema_version": "1.0.0",
+    "registry_id": "local-fixture-registry",
+    "skill_name": "portable-research-skill",
+    "release_ref": "fixture://release/example/1.0.0",
+    "package_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "interfaces": [
+      "mcp-tool",
+      "rest"
+    ],
+    "tool_name": "run_portable_research_skill",
+    "operator_controlled": true
+  },
+  "boundary_evidence": {
+    "schema_version": "1.0.0",
+    "subject_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "claims": [
+      {
+        "boundary": "egress",
+        "expected": "deny",
+        "observed": "deny",
+        "result": "pass",
+        "evidence_sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+      }
+    ],
+    "tbom_ref": "fixture://tbom/example",
+    "tsa_refs": [],
+    "assessed_at": "2026-11-12T15:00:00Z"
+  },
+  "tool_bill_of_materials": {
+    "schema_version": "1.0.0",
+    "subject_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "components": [
+      {
+        "component_id": "component-skill",
+        "component_type": "skill",
+        "name": "portable-research-skill",
+        "version": "1.0.0",
+        "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source_ref": "fixture://skill/source",
+        "license": "MIT",
+        "dependency_refs": []
+      }
+    ],
+    "generated_at": "2026-11-12T15:00:00Z",
+    "generator": "fixture-only"
+  },
+  "tool_security_advisory": {
+    "schema_version": "1.0.0",
+    "advisory_id": "FIXTURE-2026-0001",
+    "event_type": "vulnerability",
+    "severity": "medium",
+    "status": "open",
+    "affected_digests": [
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "summary": "Synthetic advisory example; not a real vulnerability report.",
+    "source_ref": "fixture://advisory/001",
+    "published_at": "2026-11-12T15:00:00Z",
+    "fixed_release_refs": [],
+    "human_review_required": true
+  },
+  "formal_verification_bundle": {
+    "schema_version": "1.0.0",
+    "skill_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "manifest_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "capability_declaration_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "canonicalization": "sorted-key-json-v1",
+    "methods": [
+      {
+        "method_id": "method-1",
+        "method_version": "fixture",
+        "status": "NOT_RUN",
+        "evidence_files": [
+          {
+            "path": "evidence/layer-1.json",
+            "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+          }
+        ]
+      },
+      {
+        "method_id": "method-2",
+        "method_version": "fixture",
+        "status": "NOT_RUN",
+        "evidence_files": [
+          {
+            "path": "evidence/layer-2.json",
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+          }
+        ]
+      },
+      {
+        "method_id": "method-3",
+        "method_version": "fixture",
+        "status": "NOT_RUN",
+        "evidence_files": [
+          {
+            "path": "evidence/layer-3.json",
+            "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+          }
+        ]
+      }
+    ],
+    "proof_bundle_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+    "replay_status": "not-run",
+    "verifier_id": "fixture-only",
+    "verified_at": "2026-11-12T15:00:00Z",
+    "fixture_only": true
+  },
+  "skill_quality_record": {
+    "schema_version": "1.0.0",
+    "evaluation_id": "fixture-quality-001",
+    "skill_name": "portable-research-skill",
+    "skill_version": "1.0.0",
+    "skill_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "benchmark_suite_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "environment_id": "synthetic-fixture",
+    "task_results": [
+      {
+        "task_id": "task-001",
+        "outcome": "pass",
+        "evidence_ref": "fixture://quality/task-001",
+        "evaluator_ref": "fixture-only"
+      },
+      {
+        "task_id": "task-002",
+        "outcome": "not-run",
+        "evidence_ref": "fixture://quality/task-002",
+        "limitations": [
+          "No real task executed"
+        ]
+      }
+    ],
+    "lineage": [],
+    "lifecycle_status": "review",
+    "reviewer_ref": "fixture-only",
+    "evaluated_at": "2026-11-12T15:00:00Z",
+    "fixture_only": true
+  },
+  "competence_record": {
+    "schema_version": "1.0.0",
+    "competence_id": "fixture-competence-001",
+    "subject_ref": "fixture://agent/example",
+    "skill_concept_id": "I-S-01.02",
+    "skill_artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "task_ref": "fixture://task/source-appraisal",
+    "context": "Synthetic offline research corpus",
+    "standard_or_rubric_ref": "fixture://rubric/appraisal-v1",
+    "observed_outcomes": [
+      "Identified source types in synthetic fixture"
+    ],
+    "evidence_refs": [
+      "fixture://evidence/competence-001"
+    ],
+    "evaluator_ref": "fixture-only",
+    "provenance_format": "native-record",
+    "status": "observed-once",
+    "limitations": [
+      "Synthetic example; no actor competence asserted"
+    ],
+    "recorded_at": "2026-11-12T15:00:00Z",
+    "fixture_only": true
+  },
+  "correction_event": {
+    "schema_version": "1.0.0",
+    "correction_id": "fixture-correction-001",
+    "event_type": "vulnerability",
+    "subject_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "affected_evidence_refs": [
+      "fixture://attestation/001",
+      "fixture://quality/001"
+    ],
+    "reason": "Synthetic correction propagation example.",
+    "source_ref": "fixture://advisory/001",
+    "propagation_status": "pending",
+    "dependents_invalidated": [],
+    "recorded_at": "2026-11-12T15:00:00Z",
+    "fixture_only": true
+  }
+}
